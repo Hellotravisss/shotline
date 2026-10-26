@@ -1,0 +1,87 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- Fonts load only at render time; the output is a flat PNG. -->
+<link href="__FONT_URL__" rel="stylesheet">
+<style>
+:root{
+  --w:__W__px; --h:__H__px; --pad:__PAD__px; --gap:__GAP__px;
+  --bg:__BG__; --ink:__INK__; --muted:__MUTED__; --accent:__ACCENT__; --accent-ink:__ACCENT_INK__; --line:__LINE__;
+  --h1:__H1__px; --sub:__SUB__px; --trust:__TRUST__px;
+  --frame-w:__FRAME_W__px; --frame-r:__FRAME_R__px; --bezel:__BEZEL__px; --shadow:__SHADOW__;
+  --font:__FONT__; --font-display:__FONT_DISPLAY__;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:var(--w);height:var(--h);overflow:hidden;background:var(--bg)}
+body{position:relative;font-family:var(--font);color:var(--ink);-webkit-font-smoothing:antialiased}
+.surface{position:absolute;inset:0;__SURFACE__}
+
+.copy{position:absolute;left:var(--pad);right:var(--pad);text-align:center}
+.eyebrow{font:800 calc(var(--sub)*.62)/1 var(--font-display);letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:calc(var(--sub)*.75)}
+.eyebrow b{color:var(--accent)}
+h1{font-family:var(--font-display);font-weight:900;font-size:var(--h1);line-height:1.13;letter-spacing:__TRACKING__}
+h1 .line{display:block;white-space:nowrap}
+h1 em{font-style:normal;__EMPHASIS__}
+.sub{margin-top:calc(var(--sub)*.7);font-size:var(--sub);font-weight:500;line-height:1.32;color:var(--muted)}
+.trust{margin-top:calc(var(--sub)*.8);font-weight:700;font-size:var(--trust);letter-spacing:.02em}
+.trust span{display:inline-block;padding:.32em .95em;border:3px solid var(--line);border-radius:999px}
+
+.device{position:absolute;left:50%;width:var(--frame-w);transform:translateX(-50%);background:#000;
+  border:var(--bezel) solid #000;border-radius:var(--frame-r);box-shadow:var(--shadow);overflow:hidden}
+.device img{display:block;width:100%;border-radius:calc(var(--frame-r) - var(--bezel))}
+
+/* hero — copy on top, device bleeds off the bottom */
+.hero .copy,.tilted .copy,.mosaic .copy,.wall .copy{top:calc(var(--h1)*.72)}
+/* device-top — device bleeds off the top, copy anchored low (breaks the phone parade) */
+.device-top .copy{bottom:calc(var(--h1)*.85)}
+/* tilted — hero with a rotated device */
+.tilted .device{transform:translateX(-50%) rotate(-5deg);transform-origin:50% 0}
+/* wall — no device: a typographic list of what else the app does (closer slide).
+   The list fills the rest of the canvas so a short list never leaves half a page blank. */
+.wall .copy{bottom:calc(var(--h1)*.9);display:flex;flex-direction:column}
+.wall ul{list-style:none;flex:1;display:flex;flex-direction:column;justify-content:space-evenly;margin-top:calc(var(--h1)*.5);text-align:left;border-top:3px solid var(--line)}
+.wall li{font-family:var(--font-display);font-weight:900;font-size:calc(var(--h1)*.6);line-height:1.2;border-bottom:3px solid var(--line);padding:.3em 0;flex:1;display:flex;align-items:center}
+.wall li:nth-child(3n+1){color:var(--accent)}
+/* mosaic — three small screens (closer alternative) */
+.mosaic .grid{position:absolute;left:var(--pad);right:var(--pad);display:flex;gap:calc(var(--pad)*.45);justify-content:center}
+.mosaic .grid .device{position:relative;left:auto;transform:none;width:calc((var(--w) - var(--pad)*2.9)/3);border-width:calc(var(--bezel)*.6);border-radius:calc(var(--frame-r)*.42)}
+.mosaic .grid .device:nth-child(2){margin-top:calc(var(--h1)*.8)}
+</style></head>
+<body class="__LAYOUT__">
+<div class="surface"></div>
+<div class="copy">__EYEBROW__<h1>__LINES__</h1>__SUB_HTML____TRUST_HTML____LIST__</div>
+__DEVICES__
+<script>
+// Layout + report, after fonts load:
+// 1. Fit: any headline line wider than the safe width shrinks in 2px steps.
+// 2. Place: devices sit a fixed gap from wherever the copy actually ended
+//    (so a wrapping sub-line never collides with the frame).
+// 3. Report to <body data-report> for `shotline check`: shrinking = copy smell,
+//    overflow = bug.
+document.fonts.ready.then(function () {
+  var body = document.body, copyEl = document.querySelector('.copy'), H = innerHeight;
+  var gap = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--gap'));
+  var base = parseFloat(getComputedStyle(document.querySelector('h1')).fontSize), max = copyEl.clientWidth;
+  var report = {shrunk: [], overflow: []};
+  document.querySelectorAll('h1 .line').forEach(function (el, i) {
+    var size = base; el.style.display = 'inline-block';
+    while (el.scrollWidth > max && size > base * 0.6) { size -= 2; el.style.fontSize = size + 'px'; }
+    el.style.display = 'block';
+    if (size < base) report.shrunk.push({line: i + 1, scale: Math.round(size / base * 100)});
+  });
+  var c = copyEl.getBoundingClientRect();
+  if (body.classList.contains('device-top')) {
+    var d = document.querySelector('.device');
+    d.style.bottom = (H - c.top + gap) + 'px';
+    if (d.getBoundingClientRect().height < H * 0.35) report.overflow.push('device squeezed by copy');
+  } else if (body.classList.contains('mosaic')) {
+    document.querySelector('.grid').style.top = (c.bottom + gap) + 'px';
+  } else if (!body.classList.contains('wall')) {
+    var dev = document.querySelector('.device');
+    dev.style.top = (c.bottom + gap) + 'px';
+    if (H - (c.bottom + gap) < H * 0.45) report.overflow.push('copy leaves under 45% of the canvas for the device');
+  }
+  if (c.bottom > H || c.top < 0) report.overflow.push('copy outside canvas');
+  body.setAttribute('data-report', JSON.stringify(report));
+});
+</script>
+</body></html>

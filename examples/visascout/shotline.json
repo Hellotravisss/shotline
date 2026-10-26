@@ -1,0 +1,168 @@
+{
+  "$comment": "The VisaScout App Store set (zh-Hans + en-US, iPhone + iPad). Raw captures live in the app repo; this file is here as a worked example.",
+  "ascAppId": "6760326776",
+  "ascLocales": {
+    "zh": "zh-Hans",
+    "en": "en-US"
+  },
+  "locales": [
+    "zh",
+    "en"
+  ],
+  "devices": [
+    "iphone",
+    "ipad"
+  ],
+  "theme": {
+    "preset": "brutal"
+  },
+  "eyebrow": "VISA*SCOUT*",
+  "slides": [
+    {
+      "layout": "hero",
+      "shot": "explore",
+      "headline": {
+        "zh": "你的护照\n能*免签*去哪？",
+        "en": "Where can your\n*passport* take you?"
+      },
+      "sub": {
+        "zh": "免签、电子签、落地签，按护照筛好",
+        "en": "Visa-free, e-Visa and on-arrival, sorted"
+      },
+      "trust": {
+        "zh": "199 个国家和地区",
+        "en": "199 countries & territories"
+      }
+    },
+    {
+      "layout": "device-top",
+      "shot": "check",
+      "headline": {
+        "zh": "中国护照\n*免签 43 国*",
+        "en": "Visa-free to\n*115 countries*"
+      },
+      "sub": {
+        "zh": "一屏看全，点开就是详情",
+        "en": "US passport shown · tap any country"
+      }
+    },
+    {
+      "layout": "tilted",
+      "shot": "news",
+      "headline": {
+        "zh": "*签证新闻*\n政策一变就知道",
+        "en": "*Visa news* the day\nthe rules change"
+      },
+      "trust": {
+        "zh": "每条都附官方来源",
+        "en": "Every item links its official source"
+      }
+    },
+    {
+      "layout": "hero",
+      "shot": "details",
+      "headline": {
+        "zh": "出发前要准备什么\n*一页看清*",
+        "en": "What you need\n*before you fly*"
+      },
+      "sub": {
+        "zh": "停留天数 · 所需材料 · 状态说明",
+        "en": "Permitted stay · documents · why this status"
+      },
+      "trust": {
+        "zh": "签证数据每月更新",
+        "en": "Visa data refreshed monthly"
+      }
+    },
+    {
+      "layout": "wall",
+      "headline": {
+        "zh": "还有一整套\n*出行工具*",
+        "en": "Plus a whole\n*travel toolkit*"
+      },
+      "items": {
+        "zh": [
+          "申根 90/180 天计算",
+          "签证到期提醒",
+          "汇率换算",
+          "使领馆查询",
+          "出行材料清单",
+          "中英双语"
+        ],
+        "en": [
+          "Schengen 90/180 calculator",
+          "Visa-expiry reminders",
+          "Currency converter",
+          "Embassy finder",
+          "Document checklist",
+          "English & 中文"
+        ]
+      }
+    }
+  ],
+  "capture": {
+    "bundleId": "com.hellotravisss.visascout",
+    "simulators": {
+      "iphone": "iPhone 17 Pro",
+      "ipad": "iPad Pro 13-inch (M5)"
+    },
+    "vars": {
+      "zh": {
+        "lang": "zh",
+        "passport": "China",
+        "dest": "Singapore"
+      },
+      "en": {
+        "lang": "en",
+        "passport": "United%20States",
+        "dest": "Japan"
+      }
+    },
+    "setup": [
+      {
+        "mergeJson": {
+          "file": "Library/Application Support/{bundle}/RCTAsyncLocalStorage_V1/manifest.json",
+          "set": {
+            "@visascout_language": "{lang}"
+          }
+        }
+      }
+    ],
+    "shots": {
+      "explore": [
+        {
+          "open": "visascout://results?mode=explore&passports=%5B%22{passport}%22%5D"
+        }
+      ],
+      "check": [
+        {
+          "open": "visascout://results?mode=explore&passports=%5B%22{passport}%22%5D"
+        },
+        {
+          "tap": {
+            "iphone": [
+              201,
+              530
+            ],
+            "ipad": [
+              516,
+              517
+            ]
+          },
+          "settle": 3
+        }
+      ],
+      "details": [
+        {
+          "open": "visascout://results?passports=%5B%22{passport}%22%5D&visas=%5B%5D&prs=%5B%5D&destinations=%5B%22{dest}%22%5D",
+          "settle": 5
+        }
+      ],
+      "news": [
+        {
+          "open": "visascout://news"
+        }
+      ]
+    }
+  }
+}
