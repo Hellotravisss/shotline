@@ -18,6 +18,8 @@ body{position:relative;font-family:var(--font);color:var(--ink);-webkit-font-smo
 .copy{position:absolute;left:var(--pad);right:var(--pad);text-align:center}
 .eyebrow{font:800 calc(var(--sub)*.62)/1 var(--font-display);letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:calc(var(--sub)*.75)}
 .eyebrow b{color:var(--accent)}
+.logo{display:block;width:calc(var(--h1)*1.6);height:calc(var(--h1)*1.6);object-fit:cover;margin:0 auto calc(var(--sub)*.95);border-radius:22.4%;
+  box-shadow:0 0 0 calc(var(--h1)*.075) __LOGO_PLATE__,0 calc(var(--h1)*.14) calc(var(--h1)*.36) rgba(0,0,0,.28)}
 h1{font-family:var(--font-display);font-weight:900;font-size:var(--h1);line-height:1.13;letter-spacing:__TRACKING__}
 h1 .line{display:block;white-space:nowrap}
 h1 em{font-style:normal;__EMPHASIS__}
@@ -48,7 +50,7 @@ h1 em{font-style:normal;__EMPHASIS__}
 </style></head>
 <body class="__LAYOUT__">
 <div class="surface"></div>
-<div class="copy">__EYEBROW__<h1>__LINES__</h1>__SUB_HTML____TRUST_HTML____LIST__</div>
+<div class="copy">__LOGO____EYEBROW__<h1>__LINES__</h1>__SUB_HTML____TRUST_HTML____LIST__</div>
 __DEVICES__
 <script>
 // Layout + report, after fonts load:

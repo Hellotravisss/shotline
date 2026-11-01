@@ -98,7 +98,11 @@ export ASC_KEY_PATH=~/.appstoreconnect/private_keys/AuthKey_XXXXXXXXXX.p8
 
 - `\n` breaks a headline line; `*word*` is the emphasised word.
 - Copy fields are a string or `{locale: string}`.
+- `"logo": "path.png"` on a slide puts the app's logo, unaltered, on a plate above the
+  headline (theme token `logoPlate`) — the cover.
 - Capture steps: `open`, `tap`, `swipe`, `wait`, `launch`, `mergeJson`, `defaults` —
+  any step takes `"device": "iphone"` to run on one device only, and coordinates can be
+  given per device and locale (`"ipad@fr"`) —
   documented in [shotline/capture.py](shotline/capture.py).
 - `rawDir` / `outDir` default to `raw/` and `out/` next to the JSON. Commit `raw/`.
 

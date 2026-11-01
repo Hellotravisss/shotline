@@ -79,6 +79,16 @@ def build_html(cfg: Config, locale: str, dev_name: str, n: int, slide: dict) -> 
     sub = cfg.text(slide.get('sub'), locale)
     trust = cfg.text(slide.get('trust'), locale)
     eyebrow = cfg.text(slide.get('eyebrow', cfg.get('eyebrow')), locale)
+    # Cover mark: the app's own logo file, used as is. It sits on a plate (theme
+    # `logoPlate`) so a logo that shares the ground colour still reads.
+    logo = slide.get('logo')
+    logo_html = ''
+    if logo:
+        lp = (cfg.root / logo)
+        if not lp.exists():
+            raise SystemExit(f'missing logo: {lp}')
+        mime = 'image/svg+xml' if lp.suffix == '.svg' else 'image/png' if lp.suffix == '.png' else 'image/jpeg'
+        logo_html = f'<img class="logo" alt="" src="data:{mime};base64,' + base64.b64encode(lp.read_bytes()).decode() + '">'
 
     if layout == 'wall':
         items = slide.get('items', {})
@@ -103,6 +113,7 @@ def build_html(cfg: Config, locale: str, dev_name: str, n: int, slide: dict) -> 
         '__SURFACE__': th['surface'], '__EMPHASIS__': th['emphasis'],
         '__TRACKING__': th['tracking']['zh' if cjk else 'default'],
         '__LAYOUT__': layout, '__LINES__': lines_html,
+        '__LOGO__': logo_html, '__LOGO_PLATE__': th.get('logoPlate', '#FFFFFF'),
         '__EYEBROW__': f'<div class="eyebrow">{_emph_b(html.escape(eyebrow))}</div>' if eyebrow else '',
         '__SUB_HTML__': f'<p class="sub">{html.escape(sub)}</p>' if sub else '',
         '__TRUST_HTML__': f'<p class="trust"><span>{html.escape(trust)}</span></p>' if trust else '',

@@ -13,6 +13,8 @@ Step vocabulary (inside "shots" and "setup" in shotline.json):
   {"open": "app://path?x={var}"}       deep link; {var} from capture.vars[locale]
   {"tap": [x, y]}                      point coordinates (iOS points, not pixels)
   {"tap": {"iphone": [x,y], "ipad": [x,y]}}   per-device coordinates
+  {"tap": {"ipad": [x,y], "ipad@fr": [x,y]}}  per-device-and-locale (longer labels move controls)
+  {"device": "iphone", "tap": [x, y]}  any step can be limited to one device
   {"tap": {"label": "Visa Free"}}      by accessibility label (AXe)
   {"swipe": [[x1,y1],[x2,y2]], "duration": 3}  slow drags don't fling — positions repeat
   {"wait": 2}                          seconds
@@ -72,9 +74,12 @@ def boot(udid: str, status_bar: dict):
     sh('xcrun', 'simctl', 'status_bar', udid, 'override', *args)
 
 
-def _pt(spec, dev: str):
-    if isinstance(spec, dict) and dev in spec:
-        spec = spec[dev]
+def _pt(spec, dev: str, locale: str = ''):
+    # Most specific wins: "ipad@fr" (a longer label pushed the control down), then "ipad".
+    if isinstance(spec, dict):
+        for key in (f'{dev}@{locale}', dev):
+            if key in spec:
+                return spec[key]
     return spec
 
 
@@ -86,20 +91,27 @@ def _subst(s, vars_: dict):
     return s
 
 
-def run_steps(steps: list, udid: str, dev: str, vars_: dict, bundle: str):
+def run_steps(steps: list, udid: str, dev: str, vars_: dict, bundle: str, locale: str = ''):
     for step in steps:
+        # {"device": "iphone"} limits a step to one device: the phone and tablet layouts
+        # of the same screen often need different paths (an extra Calculate tap, a scroll).
+        if step.get('device') and step['device'] != dev:
+            continue
         if 'open' in step:
             sh('xcrun', 'simctl', 'openurl', udid, _subst(step['open'], vars_))
             time.sleep(step.get('settle', 3))
         elif 'tap' in step or 'swipe' in step:
             if 'tap' in step:
-                t = _pt(step['tap'], dev)
+                t = _pt(step['tap'], dev, locale)
                 if isinstance(t, dict) and 'label' in t:
                     axe('tap', '--label', _subst(t['label'], vars_), udid=udid)
                 else:
-                    axe('tap', '-x', t[0], '-y', t[1], udid=udid)
+                    # A zero-length tap is dropped by the iOS 26 simulator after the first
+                    # one (the app stops reacting, the command still reports success).
+                    # A real press, down → 80 ms → up, registers every time.
+                    axe('touch', '-x', t[0], '-y', t[1], '--down', '--up', '--delay', step.get('press', 0.08), udid=udid)
             else:
-                a, b = _pt(step['swipe'], dev)
+                a, b = _pt(step['swipe'], dev, locale)
                 axe('swipe', '--start-x', a[0], '--start-y', a[1], '--end-x', b[0], '--end-y', b[1],
                     '--duration', step.get('duration', 3), udid=udid)
             time.sleep(step.get('settle', 1.5))
@@ -140,7 +152,7 @@ def capture(cfg: Config, only_locale=None, only_device=None, only_shot=None):
             vars_ = cap.get('vars', {}).get(locale, {})
             setup = cap.get('setup', [])
             setup = setup.get(locale, []) if isinstance(setup, dict) else setup   # shared list or per-locale
-            run_steps(setup, udid, dev, vars_, bundle)
+            run_steps(setup, udid, dev, vars_, bundle, locale)
             for shot, steps in cap['shots'].items():
                 if only_shot and shot != only_shot:
                     continue
@@ -148,7 +160,7 @@ def capture(cfg: Config, only_locale=None, only_device=None, only_shot=None):
                 launch = ['xcrun', 'simctl', 'launch', udid, bundle, *cap.get('launchArgs', {}).get(locale, [])]
                 sh(*launch)
                 time.sleep(cap.get('launchWait', 4))
-                run_steps(steps, udid, dev, vars_, bundle)
+                run_steps(steps, udid, dev, vars_, bundle, locale)
                 time.sleep(cap.get('settleBeforeShot', 2))   # let scroll momentum and fades finish
                 out = cfg.raw_path(locale, dev, shot)
                 sh('xcrun', 'simctl', 'io', udid, 'screenshot', str(out))

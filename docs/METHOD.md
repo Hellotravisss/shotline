@@ -79,6 +79,12 @@ differ per device, so `tap` accepts `{"iphone": [x,y], "ipad": [x,y]}`. Get them
 `axe describe-ui --udid <udid>`. Label taps work in-app; on system sheets use
 coordinates.
 
+**A tap is a press, not a point.** On the iOS 26 simulator a zero-length tap (down and up
+in the same instant) is dropped after the first one, and the command still reports
+success; once that happens the device ignores touches until it is rebooted. shotline sends
+down → 80 ms → up for every coordinate tap. If a capture stops reacting, reboot the
+simulator rather than adding waits.
+
 **Swipe slowly.** A 3-second drag stops where it ends; a flick keeps scrolling after
 the screenshot is taken. `{"swipe": [[x1,y1],[x2,y2]], "duration": 3}`.
 
