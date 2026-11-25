@@ -103,6 +103,8 @@ export ASC_KEY_PATH=~/.appstoreconnect/private_keys/AuthKey_XXXXXXXXXX.p8
   app icon (its own tile and shading) reads better with `"logoPlate": "transparent"`.
 - `"displayWeight"` (theme) sets the weight of headlines and wall items (default 900).
   Match the brand's display face: a serif like Fraunces is usually 600, not 900.
+- `"fontFeatures"` (theme) is CSS `font-feature-settings` for the slide. Faces with old-style
+  figures by default (Fraunces) need `"'lnum' 1"`, or `$1,233` reads as `$1,255` at thumbnail size.
 - `"surface"` (theme) is any CSS for a layer over the ground colour — a grid, or a brand
   pattern file next to the JSON as `background-image:url({root}/waves.svg)` (`{root}` = the
   JSON's folder). Use a pattern with a
