@@ -20,7 +20,7 @@ body{position:relative;font-family:var(--font);color:var(--ink);-webkit-font-smo
 .eyebrow b{color:var(--accent)}
 .logo{display:block;width:calc(var(--h1)*1.6);height:calc(var(--h1)*1.6);object-fit:cover;margin:0 auto calc(var(--sub)*.95);border-radius:22.4%;
   box-shadow:0 0 0 calc(var(--h1)*.075) __LOGO_PLATE__,0 calc(var(--h1)*.14) calc(var(--h1)*.36) rgba(0,0,0,.28)}
-h1{font-family:var(--font-display);font-weight:900;font-size:var(--h1);line-height:1.13;letter-spacing:__TRACKING__}
+h1{font-family:var(--font-display);font-weight:__DISPLAY_WEIGHT__;font-size:var(--h1);line-height:1.13;letter-spacing:__TRACKING__}
 h1 .line{display:block;white-space:nowrap}
 h1 em{font-style:normal;__EMPHASIS__}
 .sub{margin-top:calc(var(--sub)*.7);font-size:var(--sub);font-weight:500;line-height:1.32;color:var(--muted)}
@@ -41,7 +41,7 @@ h1 em{font-style:normal;__EMPHASIS__}
    The list fills the rest of the canvas so a short list never leaves half a page blank. */
 .wall .copy{bottom:calc(var(--h1)*.9);display:flex;flex-direction:column}
 .wall ul{list-style:none;flex:1;display:flex;flex-direction:column;justify-content:space-evenly;margin-top:calc(var(--h1)*.5);text-align:left;border-top:3px solid var(--line)}
-.wall li{font-family:var(--font-display);font-weight:900;font-size:calc(var(--h1)*.6);line-height:1.2;border-bottom:3px solid var(--line);padding:.3em 0;flex:1;display:flex;align-items:center}
+.wall li{font-family:var(--font-display);font-weight:__DISPLAY_WEIGHT__;font-size:calc(var(--h1)*.6);line-height:1.2;border-bottom:3px solid var(--line);padding:.3em 0;flex:1;display:flex;align-items:center}
 .wall li:nth-child(3n+1){color:var(--accent)}
 /* mosaic — three small screens (closer alternative) */
 .mosaic .grid{position:absolute;left:var(--pad);right:var(--pad);display:flex;gap:calc(var(--pad)*.45);justify-content:center}

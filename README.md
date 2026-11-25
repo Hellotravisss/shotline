@@ -99,7 +99,13 @@ export ASC_KEY_PATH=~/.appstoreconnect/private_keys/AuthKey_XXXXXXXXXX.p8
 - `\n` breaks a headline line; `*word*` is the emphasised word.
 - Copy fields are a string or `{locale: string}`.
 - `"logo": "path.png"` on a slide puts the app's logo, unaltered, on a plate above the
-  headline (theme token `logoPlate`) — the cover.
+  headline (theme token `logoPlate`) — the cover. A logo that is already a finished
+  app icon (its own tile and shading) reads better with `"logoPlate": "transparent"`.
+- `"displayWeight"` (theme) sets the weight of headlines and wall items (default 900).
+  Match the brand's display face: a serif like Fraunces is usually 600, not 900.
+- `"surface"` (theme) is any CSS for a layer over the ground colour — a grid, or a brand
+  pattern as `background-image:url(data:image/svg+xml;base64,…)`. Use a pattern with a
+  transparent ground so per-slide `bg` still shows through.
 - Capture steps: `open`, `tap`, `swipe`, `wait`, `launch`, `mergeJson`, `defaults` —
   any step takes `"device": "iphone"` to run on one device only, and coordinates can be
   given per device and locale (`"ipad@fr"`) —

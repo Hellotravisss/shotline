@@ -112,7 +112,7 @@ def build_html(cfg: Config, locale: str, dev_name: str, n: int, slide: dict) -> 
         '__BEZEL__': int(w * d['frame']['bezel']), '__SHADOW__': th['shadow'],
         '__SURFACE__': th['surface'], '__EMPHASIS__': th['emphasis'],
         '__TRACKING__': th['tracking']['zh' if cjk else 'default'],
-        '__LAYOUT__': layout, '__LINES__': lines_html,
+        '__DISPLAY_WEIGHT__': th.get('displayWeight', 900), '__LAYOUT__': layout, '__LINES__': lines_html,
         '__LOGO__': logo_html, '__LOGO_PLATE__': th.get('logoPlate', '#FFFFFF'),
         '__EYEBROW__': f'<div class="eyebrow">{_emph_b(html.escape(eyebrow))}</div>' if eyebrow else '',
         '__SUB_HTML__': f'<p class="sub">{html.escape(sub)}</p>' if sub else '',
