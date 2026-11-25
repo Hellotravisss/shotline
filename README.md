@@ -105,6 +105,8 @@ export ASC_KEY_PATH=~/.appstoreconnect/private_keys/AuthKey_XXXXXXXXXX.p8
   Match the brand's display face: a serif like Fraunces is usually 600, not 900.
 - `"fontFeatures"` (theme) is CSS `font-feature-settings` for the slide. Faces with old-style
   figures by default (Fraunces) need `"'lnum' 1"`, or `$1,233` reads as `$1,255` at thumbnail size.
+  If the web font has no `lnum`, use the app's own font files: `fonts.url` may be a local
+  stylesheet, `{root}/fonts.css`, with `@font-face` rules pointing at the app's `.ttf`.
 - `"surface"` (theme) is any CSS for a layer over the ground colour — a grid, or a brand
   pattern file next to the JSON as `background-image:url({root}/waves.svg)` (`{root}` = the
   JSON's folder). Use a pattern with a

@@ -103,7 +103,7 @@ def build_html(cfg: Config, locale: str, dev_name: str, n: int, slide: dict) -> 
 
     fonts = th['fonts']
     repl = {
-        '__FONT_URL__': fonts['url'], '__FONT__': fonts['body'], '__FONT_DISPLAY__': fonts['display'],
+        '__FONT_URL__': fonts['url'].replace('{root}', cfg.root.resolve().as_uri()), '__FONT__': fonts['body'], '__FONT_DISPLAY__': fonts['display'],
         '__W__': w, '__H__': h, '__PAD__': int(w * .06), '__GAP__': int(d['type']['headline'] * .5),
         '__BG__': slide.get('bg', th['bg']), '__INK__': th['ink'], '__MUTED__': th['muted'], '__LINE__': th['line'],
         '__ACCENT__': accent, '__ACCENT_INK__': th['accentInk'],
