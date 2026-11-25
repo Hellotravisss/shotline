@@ -55,6 +55,17 @@ Alternate so adjacent slides never share a silhouette.
 
 ---
 
+**Start with three directions for slide 1.** Before writing the whole set, build slide 1
+three different ways, compare them at thumbnail size, score them honestly, pick one. The
+example itself is part of the concept: a figure that looks too low or too ordinary for the
+audience undersells the app — choose a better example and recompute it, don't edit it.
+
+**Every figure is computed.** Run the product's own logic for the example (its engine, its
+API), record inputs and outputs next to the config, and make the headline say exactly what
+the capture under it shows.
+
+---
+
 ## 2. Capture — real app, real data, reproducible
 
 **Release build.** Debug and dev-client builds add overlays (dev menus, floating
@@ -95,6 +106,12 @@ mocked numbers, no lorem ipsum, no "John Appleseed" with a fake 5-star review.
 inside the Chinese UI, half-width punctuation in CJK text, a truncated label. Fix
 the app or pick a different example — don't paper over it in compose.
 
+**Read every raw as a reviewer, in every locale.** Check number formats per language
+(French `1 676,09 $`, `30,5 %`, `75,0 h`), years (a 2026 build saying "2025"), figures typed
+as literals instead of read from data, and two numbers on one screen that imply different
+things. Each is an app bug: fix it, rebuild, recapture. A screen with a number you can't
+explain does not go in the store.
+
 **iPad needs iPad captures.** A phone screenshot in an iPad frame is rejected (and
 looks wrong). If the app's iPad layout is a stretched phone layout, that shows — the
 fix is in the app.
@@ -116,6 +133,10 @@ space between CJK and Latin/digits (`免签 43 国`, `申根 90/180 天`). Type 
 characters directly or as `，`-style escapes — never let an editor turn them
 into ASCII. Tracking: slightly positive for CJK, slightly negative for Latin display
 type; the themes set both.
+
+**Or compose in Illustrator.** `docs/ILLUSTRATOR.md`: the same slides built by script on
+Apple's own bezels, delivered as editable `.ai` files. Apple's bezels must be used as is —
+upright, whole, no shadow, nothing entering the screen.
 
 **Themes are a starting point.** `brutal` (flat saturated ground, hard offset
 shadows) and `editorial` (paper, serif display). Override any token under `theme`.

@@ -6,7 +6,7 @@ App Store screenshots as a pipeline: **capture** real screens from the simulator
 
 One JSON file per app. No design tool, no UI-test target, no app changes.
 
-[中文说明](README.zh-CN.md) · [The method](docs/METHOD.md)
+[中文说明](README.zh-CN.md) · [The method](docs/METHOD.md) · [Illustrator route](docs/ILLUSTRATOR.md)
 
 ![VisaScout, English iPhone set](examples/visascout/sheet-en-iphone.png)
 ![VisaScout, Chinese iPhone set](examples/visascout/sheet-zh-iphone.png)

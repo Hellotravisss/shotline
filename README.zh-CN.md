@@ -4,7 +4,7 @@
 
 每个 app 一个 JSON。不用设计软件，不用写 UI 测试，不改 app 代码。
 
-[English](README.md) · [完整方法论（英文）](docs/METHOD.md)
+[English](README.md) · [完整方法论（英文）](docs/METHOD.md) · [Illustrator 路线（英文）](docs/ILLUSTRATOR.md)
 
 ![VisaScout 中文 iPhone 组图](examples/visascout/sheet-zh-iphone.png)
 
