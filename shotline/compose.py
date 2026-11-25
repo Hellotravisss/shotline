@@ -110,7 +110,7 @@ def build_html(cfg: Config, locale: str, dev_name: str, n: int, slide: dict) -> 
         '__H1__': int(d['type']['headline'] * scale), '__SUB__': d['type']['sub'], '__TRUST__': d['type']['trust'],
         '__FRAME_W__': int(w * d['frame']['width']), '__FRAME_R__': int(w * d['frame']['radius']),
         '__BEZEL__': int(w * d['frame']['bezel']), '__SHADOW__': th['shadow'],
-        '__SURFACE__': th['surface'], '__EMPHASIS__': th['emphasis'],
+        '__SURFACE__': th['surface'].replace('{root}', cfg.root.resolve().as_uri()), '__EMPHASIS__': th['emphasis'],
         '__TRACKING__': th['tracking']['zh' if cjk else 'default'],
         '__DISPLAY_WEIGHT__': th.get('displayWeight', 900), '__LAYOUT__': layout, '__LINES__': lines_html,
         '__LOGO__': logo_html, '__LOGO_PLATE__': th.get('logoPlate', '#FFFFFF'),

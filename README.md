@@ -104,7 +104,8 @@ export ASC_KEY_PATH=~/.appstoreconnect/private_keys/AuthKey_XXXXXXXXXX.p8
 - `"displayWeight"` (theme) sets the weight of headlines and wall items (default 900).
   Match the brand's display face: a serif like Fraunces is usually 600, not 900.
 - `"surface"` (theme) is any CSS for a layer over the ground colour — a grid, or a brand
-  pattern as `background-image:url(data:image/svg+xml;base64,…)`. Use a pattern with a
+  pattern file next to the JSON as `background-image:url({root}/waves.svg)` (`{root}` = the
+  JSON's folder). Use a pattern with a
   transparent ground so per-slide `bg` still shows through.
 - Capture steps: `open`, `tap`, `swipe`, `wait`, `launch`, `mergeJson`, `defaults` —
   any step takes `"device": "iphone"` to run on one device only, and coordinates can be
